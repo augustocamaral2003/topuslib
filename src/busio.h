@@ -3,11 +3,7 @@
 
 #include <Arduino.h>
 
-#if !defined(SPI_INTERFACES_COUNT) ||                                          \
-    (defined(SPI_INTERFACES_COUNT) && (SPI_INTERFACES_COUNT > 0))
-
 #include "i2c.h"
-#include "spidevice.h"
 
 typedef enum _busio_spi_RegType {
     ADDRBIT8_HIGH_TOREAD = 0,
@@ -19,14 +15,6 @@ typedef enum _busio_spi_RegType {
 class busio {
     public:
         busio(i2c *i2cdevice, uint16_t reg_addr,
-              uint8_t width = 1, uint8_t byteorder = LSBFIRST,
-              uint8_t address_width = 1);
-        busio(spidevice *spidevice, uint16_t reg_addr,
-              busio_spi_RegType type, uint8_t width = 1,
-              uint8_t byteorder = LSBFIRST,
-              uint8_t address_width = 1);
-        busio(i2c *i2cdevice, spidevice *spidevice,
-              busio_spi_RegType type, uint16_t reg_addr,
               uint8_t width = 1, uint8_t byteorder = LSBFIRST,
               uint8_t address_width = 1);
 
@@ -49,7 +37,6 @@ class busio {
 
     private:
         i2c *_i2cdevice;
-        spidevice *_spidevice;
         busio_spi_RegType _spiregtype;
         uint16_t _address;
         uint8_t _width, _addrwidth, _byteorder;
@@ -68,5 +55,4 @@ class busio_bits {
         uint8_t _bits, _shift;
 };
 
-#endif
 #endif // busio_h
