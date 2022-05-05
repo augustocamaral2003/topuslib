@@ -57,5 +57,16 @@ class busio {
         uint32_t _cached = 0;
 };
 
+class busio_bits {
+    public:
+        busio_bits(busio *reg, uint8_t bits, uint8_t shift);
+        bool write(uint32_t value);
+        uint32_t read(void);
+
+    private:
+        busio *_register;
+        uint8_t _bits, _shift;
+};
+
 #endif
 #endif // busio_h

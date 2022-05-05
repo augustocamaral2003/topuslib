@@ -187,4 +187,29 @@ void busio::setAddressWidth(uint16_t address_width) {
   _addrwidth = address_width;
 }
 
+busio_bits::busio_bits(busio *reg, uint8_t bits, uint8_t shift) {
+    _register = reg;
+    _bits = bits;
+    _shift = shift;
+}
+
+uint32_t busio_bits::read(void) {
+    uint32_t val = _register->read();
+    val >>= _shift;
+    return val & ((1 << (_bits)) - 1);
+}
+
+bool busio_bits::write(uint32_t data) {
+    uint32_t val = _register->read();
+
+    uint32_t mask = (1 << (_bits)) - 1;
+    data &= mask;
+
+    mask <<= _shift;
+    val &= ~mask;
+    val |= data << _shift;
+
+    return _register->write(val, _register->width());
+}
+
 #endif // SPI exists
