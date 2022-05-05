@@ -81,4 +81,12 @@ bool i2c::_read(uint8_t *buffer, size_t len, bool stop) {
     return true;
 }
 
+bool i2c::write_then_read(const uint8_t *write_buffer, size_t write_len,
+                          uint8_t *read_buffer, size_t read_len, bool stop) {
+    if (!write(write_buffer, write_len, stop))
+        return false;
+
+    return read(read_buffer, read_len);
+}
+
 uint8_t i2c::address(void) { return _addr; }
